@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Awesome Chat</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <style>
+        #chat {
+            background-color: lightgrey;
+            height: 20em;
+        }
+    </style>
+</head>
+
+<body class="container">
+
+    <h1 class="text-center">Awesome chat</h1>
+    <div class="row justify-content-md-center">
+        <div id="chat" class="row col-md-8">
+        </div>
+        <form action="new-message.php" class="row col-md-8 m-3">
+            <label for="message">Message :</label>
+            <input type="text" class="form-control" id="message" placeholder="Say hi !">
+            <button type="submit" id="submit-message" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+
+    <script>
+        // recuperation de button et rajouter la function sur le click qui enclenche la function mais qui 
+        // empeche l'affichage avec preventDefault() et le message qui s'affiche dans la console 
+        let submitMessage = document.querySelector('#submit-message');
+        submitMessage.addEventListener('click', function(e) {
+
+            e.preventDefault();
+            let input = document.querySelector('#message');
+            console.log(input.value);
+            // envoyer les donnees au serveur
+            xhr = new XMLHttpRequest();
+            xhr.open('POST', "new-message.php");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log("success:" + xhr.responseText);
+                    } else {
+                        console.error("unexpected status:" + xhr.status);
+                        console.error(xhr.response);
+                    }
+                }
+            };
+            //pour indiquer au serveur les donnees qu'on lui donne
+            // la requete qui est obligatoire de mettre pour que serveur puisse reconnaitre 
+            // ce qu'on lui dit 
+            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+            xhr.send("message=" + input.value);
+        });
+    </script>
+
+</body>
+
+</html>
