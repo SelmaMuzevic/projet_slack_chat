@@ -1,9 +1,12 @@
 <?php
-if(!empty($_POST['message'])){
+if (empty($_POST['message'])) {
     http_response_code(400);
-    header("Content-type: text/plain");
-    echo "missing parameter";
+    header('Content-Type: text/plain');
+    echo 'expect a message parameter';
     exit(1);
 }
-echo $_POST['message'];
-?>
+
+$msg = new Message($_POST['message']);
+// DEBUG: remove when connected to DB.
+header('Content-Type: text/plain');
+var_dump($msg);
