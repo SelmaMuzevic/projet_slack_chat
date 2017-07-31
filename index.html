@@ -10,18 +10,20 @@
 
     <style>
         #chat {
-            background-color: lightgrey;
-            height: 20em;
+            background-color: lightgray;
+            height: 50vh;
+            overflow-y: scroll
         }
     </style>
 </head>
 
 <body class="container">
 
-    <h1 class="text-center">Awesome chat</h1>
+    <h1 class="text-center">Slack chat</h1>
     <div class="row justify-content-md-center">
         <div id="chat" class="row col-md-8">
         </div>
+
         <form action="new-message.php" class="row col-md-8 m-3">
             <label for="message">Message :</label>
             <input type="text" class="form-control" id="message" placeholder="Say hi !">
@@ -30,32 +32,53 @@
     </div>
 
     <script>
+        "use strict";
+
+        let messages = ["Coucou !", "Sunshine !", "test ..."];
+
+        // function qui affiche le message dans le tableau avec la boucle 
+        function display() {
+            let div = document.querySelector("#chat");
+            div.innerHTML = "";
+            for (let m of messages) {
+                let p = document.createElement("p");
+                p.textContent = m;
+                div.appendChild(p);
+            }
+        }
+        display();
+
         // recuperation de button et rajouter la function sur le click qui enclenche la function mais qui 
         // empeche l'affichage avec preventDefault() et le message qui s'affiche dans la console 
-        let submitMessage = document.querySelector('#submit-message');
-        submitMessage.addEventListener('click', function(e) {
-
+        let submitMessage = document.querySelector("#submit-message");
+        submitMessage.addEventListener("click", function(e) {
             e.preventDefault();
-            let input = document.querySelector('#message');
-            console.log(input.value);
-            // envoyer les donnees au serveur
-            xhr = new XMLHttpRequest();
-            xhr.open('POST', "new-message.php");
+            let message = document.querySelector("#message").value;
+
+            // nouvelle requete lancée 
+            let xhr = new XMLHttpRequest();
+
+            // on envoie la requete xhr 
+            xhr.open("POST", "new-message.php");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
+
                     if (xhr.status === 200) {
-                        console.log("success:" + xhr.responseText);
+                        console.log("success: " + xhr.responseText);
+
+
+                        // Controller: we update our data and ask for a new display.
+                        messages.push(messages);
+                        display();
                     } else {
                         console.error("unexpected status:" + xhr.status);
                         console.error(xhr.response);
                     }
                 }
-            };
-            //pour indiquer au serveur les donnees qu'on lui donne
-            // la requete qui est obligatoire de mettre pour que serveur puisse reconnaitre 
-            // ce qu'on lui dit 
-            xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-            xhr.send("message=" + input.value);
+            }
+
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send("message=" + messages);
         });
     </script>
 
