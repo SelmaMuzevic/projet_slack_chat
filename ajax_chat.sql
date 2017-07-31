@@ -12,6 +12,6 @@ USE 'ajax_chat';
 
 CREATE TABLE 'message' (
     'Id' INT AUTO_INCREMENT PRIMARY KEY, 
-    'text' TEXT,
-    'timestamp' TIMESTAMP 
+    'text' TEXT NOT NULL,
+    'timestamp' TIMESTAMP NOT NULL
 );
