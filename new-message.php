@@ -4,9 +4,20 @@ if (empty($_POST['message'])) {
     header('Content-Type: text/plain');
     echo 'expect a message parameter';
     exit(1);
+    
 }
 
-$msg = new Message($_POST['message']);
-// DEBUG: remove when connected to DB.
-header('Content-Type: text/plain');
-var_dump($msg);
+try {
+    $db = new PDO('mysql:dbname=ajax_chat;host=localhost', 'ajax_chat_user', 'We love SQL API!');
+} catch (PDOException $e) {
+    echo 'Connexion échouée : ' . $e->getMessage();
+}
+
+// preparation de la requete et insertion des donnees dans la database avec la value text et timestamp
+$stmt = $db->prepare('INSERT INTO message (text, timestamp) VALUES (:text, :timestamp);');
+$stmt->execute([
+    ':text' => $_POST['message'],
+    ':timestamp' => date("Y-m-d H:i:s")// ça defini par défaut l'heure courante locale (Y: year, m: month, d: date, H: hour, i: minuts, s: seconds)
+]);
+
+echo $_POST['message'];

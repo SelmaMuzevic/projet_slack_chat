@@ -7,23 +7,41 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>My Awesome Chat</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
     <style>
         #chat {
-            background-color: lightgray;
-            height: 50vh;
+            background-color: gray;
+            height: 60vh;
+            overflow: scroll;
+        }
+        
+        .text-center {
+            color: blue;
+            text-shadow: 2px 2px black;
+            font-family: 'Indie Flower', cursive;
+            margin-top: 15px;
+        }
+        
+        .container {
+            background-color: lightgrey;
+        }
+        
+        .btn {
+            background-color: gray;
         }
     </style>
 </head>
 
 <body class="container">
 
-    <h1 class="text-center">Slack chat</h1>
-    <div class="row justify-content-md-center">
-        <div id="chat" class="row col-md-8">
+    <h1 class="text-center">My awsome tchat</h1>
+
+    <div class="row mt-5 justify-content-md-center">
+
+        <div id="chat" class=" col-md-8 mt-3">
         </div>
 
-        <form action="new-message.php" class="row col-md-8 m-3">
+        <form action="new-message.php" class="row col-md-8 m-3" method="POST">
             <label for="message">Message :</label>
             <input type="text" class="form-control" id="message" placeholder="Say hi !">
             <button type="submit" id="submit-message" class="btn btn-primary">Send</button>
@@ -33,7 +51,7 @@
     <script>
         "use strict";
 
-        let messages = ["Coucou !", "Sunshine !", "test ..."];
+        let messages = [];
 
         // function qui affiche le message dans le tableau avec la boucle 
         function display() {
@@ -41,11 +59,11 @@
             div.innerHTML = "";
             for (let m of messages) {
                 let p = document.createElement("p");
-                p.textContent = m;
+                p.textContent += m;
                 div.appendChild(p);
             }
         }
-        display();
+
 
         // recuperation de button et rajouter la function sur le click qui enclenche la function mais qui 
         // empeche l'affichage avec preventDefault() et le message qui s'affiche dans la console 
@@ -64,11 +82,10 @@
 
                     if (xhr.status === 200) {
                         console.log("success: " + xhr.responseText);
-
-
                         // Controller: we update our data and ask for a new display.
-                        messages.push(messages);
+                        messages.push(message);
                         display();
+                        document.querySelector("#message").value = "";
                     } else {
                         console.error("unexpected status:" + xhr.status);
                         console.error(xhr.response);
@@ -77,7 +94,7 @@
             }
 
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.send("message=" + messages);
+            xhr.send("message=" + message);
         });
     </script>
 
