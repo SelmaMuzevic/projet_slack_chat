@@ -66,7 +66,8 @@
 
 
         // recuperation de button et rajouter la function sur le click qui enclenche la function mais qui 
-        // empeche l'affichage avec preventDefault() et le message qui s'affiche dans la console 
+        // empeche l'affichage avec preventDefault() 
+        // et le message qui s'affiche dans la console 
         let submitMessage = document.querySelector("#submit-message");
         submitMessage.addEventListener("click", function(e) {
             e.preventDefault();
@@ -83,6 +84,7 @@
                     if (xhr.status === 200) {
                         console.log("success: " + xhr.responseText);
                         // Controller: we update our data and ask for a new display.
+                        // on update les messages et ça s'affiche sur l'ecran
                         messages.push(message);
                         display();
                         document.querySelector("#message").value = "";
