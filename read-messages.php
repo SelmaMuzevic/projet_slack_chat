@@ -1,15 +1,17 @@
 <?php
-    $db = new PDO('mysql:dbname=ajax_chat;host=localhost', 
-    'ajax_chat_user', 
-    'We love SQL API!');
+header("content-Type: text/plain");
 
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-$stmt = $db->prepare('SELECT * FROM messages');
+try {
+    $db = new PDO('mysql:dbname=ajax_chat;host=localhost', 'ajax_chat_user', 'We love SQL API!');
+} catch (PDOException $e) {
+    echo 'Connexion échouée : ' . $e->getMessage();
+}
+$stmt = $db->prepare('SELECT * FROM message');
 $stmt->execute();
+$res = $stmt->fetchAll();
 
-$query = $stmt->fetchAll();
+$query = json_encode($res);
+
+echo $query;
 
 ?>
-
-

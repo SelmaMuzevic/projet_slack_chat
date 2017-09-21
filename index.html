@@ -63,7 +63,7 @@
                 div.appendChild(p);
             }
         }
-
+        display();
 
         // recuperation de button et rajouter la function sur le click qui enclenche la function mais qui 
         // empeche l'affichage avec preventDefault() 
@@ -86,7 +86,7 @@
                         // Controller: we update our data and ask for a new display.
                         // on update les messages et ça s'affiche sur l'ecran
                         messages.push(message);
-                        display();
+
                         document.querySelector("#message").value = "";
                     } else {
                         console.error("unexpected status:" + xhr.status);
@@ -98,6 +98,32 @@
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.send("message=" + message);
         });
+
+
+        function requestAjax() {
+            let xhr = new XMLHttpRequest();
+
+            // on envoie la requete xhr 
+            xhr.open("POST", "read-messages.php");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+
+                    if (xhr.status === 200) {
+                        let $message = JSON.parse(xhr.response);
+                        console.log("succes:");
+
+                    } else {
+                        console.error("unexpected status:" + xhr.status);
+                        console.error(xhr.response);
+                    }
+
+                }
+            }
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send();
+
+        };
+        requestAjax();
     </script>
 
 </body>
