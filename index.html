@@ -41,10 +41,10 @@
         <div id="chat" class=" col-md-8 mt-3">
         </div>
 
-        <form action="new-message.php" class="row col-md-8 m-3" method="POST">
+        <form action="new-message.php" id="submit-message" class="row col-md-8 m-3" method="POST">
             <label for="message">Message :</label>
             <input type="text" class="form-control" id="message" placeholder="Say hi !">
-            <button type="submit" id="submit-message" class="btn btn-primary">Send</button>
+            <button type="submit" class="btn btn-primary">Send</button>
         </form>
     </div>
 
@@ -52,14 +52,15 @@
         "use strict";
 
         let messages = [];
+        let div = document.querySelector("#chat");
 
         // function qui affiche le message dans le tableau avec la boucle 
         function display() {
-            let div = document.querySelector("#chat");
             div.innerHTML = "";
             for (let m of messages) {
+                console.log(m);
                 let p = document.createElement("p");
-                p.textContent += m;
+                p.textContent += m.text;
                 div.appendChild(p);
             }
         }
@@ -69,7 +70,7 @@
         // empeche l'affichage avec preventDefault() 
         // et le message qui s'affiche dans la console 
         let submitMessage = document.querySelector("#submit-message");
-        submitMessage.addEventListener("click", function(e) {
+        submitMessage.addEventListener("submit", function(e) {
             e.preventDefault();
             let message = document.querySelector("#message").value;
 
@@ -85,7 +86,9 @@
                         console.log("success: " + xhr.responseText);
                         // Controller: we update our data and ask for a new display.
                         // on update les messages et ça s'affiche sur l'ecran
-                        messages.push(message);
+                        let p = document.createElement("p");
+                        p.textContent += message;
+                        div.appendChild(p);
 
                         document.querySelector("#message").value = "";
                     } else {
@@ -104,14 +107,14 @@
             let xhr = new XMLHttpRequest();
 
             // on envoie la requete xhr 
-            xhr.open("POST", "read-messages.php");
+            xhr.open("GET", "read-messages.php");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
 
                     if (xhr.status === 200) {
-                        let $message = JSON.parse(xhr.response);
-                        console.log("succes:");
-
+                        messages = JSON.parse(xhr.response);
+                        console.log("succes:" + xhr.response);
+                        display();
                     } else {
                         console.error("unexpected status:" + xhr.status);
                         console.error(xhr.response);

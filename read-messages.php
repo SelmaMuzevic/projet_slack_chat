@@ -1,6 +1,7 @@
 <?php
 header("content-Type: text/plain");
 
+
 try {
     $db = new PDO('mysql:dbname=smuzevic_ajax_chat;host=localhost', 'smuzevic', 'smuzevic');
 } catch (PDOException $e) {

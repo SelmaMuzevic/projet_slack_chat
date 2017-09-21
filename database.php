@@ -21,7 +21,7 @@ $query->execute();
     }
 public function getMessages(){
     try {
-    $db = new PDO('mysql:dbname=smuzevic_ajax_chat;host=localhost', 'smuzevic', 'smuzevic');
+    $db = new PDO('mysql:dbname=ajax_chat;host=localhost', 'smuzevic', 'smuzevic');
 } catch (PDOException $e) {
     echo 'Connexion échouée : ' . $e->getMessage();
 }
