@@ -8,7 +8,7 @@ if (empty($_POST['message'])) {
 }
 
 try {
-    $db = new PDO('mysql:dbname=ajax_chat;host=localhost', 'ajax_chat_user', 'We love SQL API!');
+    $db = new PDO('mysql:dbname=smuzevic_ajax_chat;host=localhost', 'smuzevic', 'smuzevic');
 } catch (PDOException $e) {
     echo 'Connexion échouée : ' . $e->getMessage();
 }
