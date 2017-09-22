@@ -20,4 +20,4 @@ $stmt->execute([
     ':timestamp' => date("Y-m-d H:i:s")// ça defini par défaut l'heure courante locale (Y: year, m: month, d: date, H: hour, i: minuts, s: seconds)
 ]);
 
-echo $_POST['message'];
+// echo $_POST['message'];
